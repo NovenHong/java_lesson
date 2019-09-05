@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.owner.test.mapper.UserMapper">
+
+	<insert id="insertUser" parameterType="com.owner.test.entity.User" useGeneratedKeys="true" keyProperty="id">
+		insert into user (username,password,status,createTime)
+		values (#{username},#{password},#{status},#{createTime})
+	</insert>
+	
+	<select id="queryAllUser" resultType="com.owner.test.entity.User">
+		select * from user
+	</select>
+	
+	<resultMap id="userWithAddressResultMap" type="com.owner.test.entity.User" autoMapping="true">
+		<id column="id" property="id" />
+		<collection property="addressList" javaType="List" ofType="com.owner.test.entity.Address" autoMapping="true">
+			<id column="addressId" property="id" />
+		</collection>
+	</resultMap>
+	
+	<select id="queryUserWithAddressByPrimaryId" resultMap="userWithAddressResultMap">
+		SELECT u.*, a.id addressId,a.userId,a.country,a.province,a.city,a.street
+		FROM user AS u LEFT JOIN address AS a ON u.id = a.userId WHERE u.id = #{id};
+	</select>
+	
+	<update id="addOneHundred">
+		update user set account=account+100 where id=1
+	</update>
+	
+	<update id="subOneHundred">
+		update user set account=account-100 where id=1
+	</update>
+</mapper>

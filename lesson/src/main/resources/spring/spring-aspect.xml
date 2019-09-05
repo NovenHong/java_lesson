@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+        
+        <aop:aspectj-autoproxy proxy-target-class="true"/>
+        
+        <bean id="logHandler" class="com.owner.test.utils.LogHandler"/>
+        
+        <aop:config>
+        	<aop:aspect id="log" ref="logHandler" order="1">
+        		<aop:pointcut id="logging" expression="execution(* com.owner.test.service.*.*(..))"/>
+        		<aop:before method="logBefore" pointcut-ref="logging"/>
+        		<aop:after method="logAfter" pointcut-ref="logging"/>
+        	</aop:aspect>
+        </aop:config>
+</beans>
