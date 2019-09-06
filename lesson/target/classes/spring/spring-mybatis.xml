@@ -28,6 +28,21 @@
         <property name="dataSource" ref="dataSource" />
         <!-- 自动扫描mapping.xml文件 -->
         <property name="mapperLocations" value="classpath:mybatis/*Mapper.xml"></property>
+        <!-- 配置pagehelper分页插件 -->
+        <property name="plugins">
+        	<array>
+        		<bean class="com.github.pagehelper.PageInterceptor">
+        			<property name="properties">
+        				<value>
+        					helperDialect=mysql
+        					pageSizeZero=true
+        					reasonable=true
+        					offsetAsPageNum=true
+        				</value>
+        			</property>
+        		</bean>
+        	</array>
+        </property>
     </bean>
     
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

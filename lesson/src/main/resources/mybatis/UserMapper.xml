@@ -32,4 +32,8 @@
 	<update id="subOneHundred">
 		update user set account=account-100 where id=1
 	</update>
+	
+	<select id="getUserForLogin" resultType="com.owner.test.entity.User">
+		select * from user where username=#{username} and password=#{password}
+	</select>
 </mapper>

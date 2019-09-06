@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.owner.test.mapper.AddressMapper">
+
+	<insert id="insertAddress" parameterType="com.owner.test.entity.Address" useGeneratedKeys="true" keyProperty="id">
+		insert into address (userId,country,province,city,street,createTime)
+		values (#{userId},#{country},#{province},#{city},#{street},#{createTime})
+	</insert>
+	
+</mapper>

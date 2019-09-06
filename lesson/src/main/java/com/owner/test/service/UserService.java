@@ -1,8 +1,11 @@
 package com.owner.test.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import com.owner.test.entity.User;
 import com.owner.test.mapper.UserMapper;
@@ -14,6 +17,8 @@ public class UserService {
 	private UserMapper userMapper;
 	
 	public void insertUser(User user) {
+		user.setPassword(DigestUtils.md5DigestAsHex(user.getPassword().getBytes()));
+		user.setCreateTime(System.currentTimeMillis() / 1000);
 		
 		this.userMapper.insertUser(user);
 	}
@@ -25,6 +30,17 @@ public class UserService {
 		int i = 1 / 0;
 		
 		this.userMapper.subOneHundred();
+	}
+
+	public User userLogin(String username, String password) {
+		
+		password = DigestUtils.md5DigestAsHex(password.getBytes());
+		
+		return this.userMapper.getUserForLogin(username,password);
+	}
+	
+	public List<User> queryAllUser() {
+		return userMapper.queryAllUser();
 	}
 	
 }

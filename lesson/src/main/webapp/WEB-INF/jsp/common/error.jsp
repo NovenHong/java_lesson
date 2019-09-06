@@ -3,20 +3,19 @@
 <html>
   <head>
     
-    <title>error</title>
+    <title>错误提示</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
 	
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 
   </head>
   
   <body>
-  	<h3>error</h3>
+  	<h3>错误提示</h3>
   	<h4>${message}</h4>
   	<span class="timeout">3</span>秒后跳转...
   </body>
@@ -31,7 +30,7 @@
 		$(".timeout").text(timeout);
 		if(timeout == 0){
 			clearInterval(timer);
-			location.href="${url}";
+			location.href="${APP_PATH}/${url}";
 		}
 	}, 1000)
 </script>
