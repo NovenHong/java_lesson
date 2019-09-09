@@ -4,7 +4,7 @@
   <artifactId>lesson</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <name>lesson</name>
+  <name>lesson2</name>
   <description/>
   <properties>
     <webVersion>4.0</webVersion>
