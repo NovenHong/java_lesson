@@ -22,7 +22,7 @@
 	
 	<select id="queryUserWithAddressByPrimaryId" resultMap="userWithAddressResultMap">
 		SELECT u.*, a.id addressId,a.userId,a.country,a.province,a.city,a.street
-		FROM user AS u LEFT JOIN address AS a ON u.id = a.userId WHERE u.id = #{id};
+		FROM user AS u LEFT JOIN address AS a ON u.id = a.userId WHERE u.id = #{id}
 	</select>
 	
 	<update id="addOneHundred">
@@ -36,4 +36,27 @@
 	<select id="getUserForLogin" resultType="com.owner.test.entity.User">
 		select * from user where username=#{username} and password=#{password}
 	</select>
+	
+	<select id="getUserByPrimaryId" resultType="com.owner.test.entity.User">
+		select * from user where id = #{id}
+	</select>
+	
+	<resultMap id="userWithRoleResultMap" type="com.owner.test.entity.User" autoMapping="true">
+		<id column="id" property="id" />
+		<collection property="roleList" javaType="List" ofType="com.owner.test.entity.Role" autoMapping="true">
+			<result column="roleId" property="id"/>
+			<result column="roleCreateTime" property="createTime"/>
+		</collection>
+	</resultMap>
+	
+	<select id="queryUserWithRoleByPrimaryId" resultMap="userWithRoleResultMap">
+		SELECT u.*,r.id roleId,r.userId,r.name,r.createTime roleCreateTime
+		FROM user u,role r,user_role_rel ur 
+		WHERE u.id = ur.userId AND r.id = ur.roleId AND u.id = #{id}
+	</select>
+	
+	<select id="deleteUserRoleByRelation" parameterType="com.owner.test.entity.UserRoleRelation">
+		delete from user_role_rel where userId = #{user.id} and roleId = #{role.id}
+	</select>
+	
 </mapper>

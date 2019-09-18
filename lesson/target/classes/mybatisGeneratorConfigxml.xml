@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+  
+  <generatorConfiguration>
+  
+  	<classPathEntry location="C:\Users\Administrator\.m2\repository\mysql\mysql-connector-java\8.0.17\mysql-connector-java-8.0.17.jar" />
+  	
+  	<context id="mysql">
+  	
+  		<property name="javaFileEncoding" value="UTF-8"/>
+  		
+  		<property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+  		
+  		<property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+  		
+  		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+  		
+  		<jdbcConnection 
+  			driverClass="com.mysql.jdbc.Driver" 
+  			connectionURL="jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;serverTimezone=UTC" 
+  			userId="root" 
+  			password="">
+  		</jdbcConnection>
+
+  		
+  		<javaModelGenerator targetPackage="com.owner.test.entity" targetProject="lesson/src/main/java">
+  			<property name="constructorBased" value="false"/>
+  			<property name="trimStrings" value="true" />
+  		</javaModelGenerator>
+  		
+  		<sqlMapGenerator targetPackage="mybatis" targetProject="lesson/src/main/resources"></sqlMapGenerator>
+  		
+  		<javaClientGenerator targetPackage="com.owner.test.mapper" type="XMLMAPPER" targetProject="lesson/src/main/java"></javaClientGenerator>
+  		
+  		<table 
+  			tableName="address" 
+  			catalog="test" enableCountByExample="false" enableUpdateByExample="false" 
+  			enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" >
+  			<property name="constructorBased" value="false"/>
+  			<property name="useActualColumnNames" value="true"/>
+  			<property name="ignoreQualifiersAtRuntime" value="true"/>
+  			<generatedKey column="id" sqlStatement="JDBC"/>
+  		</table>
+  	</context>
+  </generatorConfiguration>

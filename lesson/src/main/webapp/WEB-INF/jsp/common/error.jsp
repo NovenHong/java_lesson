@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -30,7 +31,14 @@
 		$(".timeout").text(timeout);
 		if(timeout == 0){
 			clearInterval(timer);
-			location.href="${APP_PATH}/${url}";
+			<c:choose>
+		  		<c:when test="${url}">
+		  			location.href="${APP_PATH}/${url}";
+		  		</c:when>
+		  		<c:otherwise>
+		  			window.history.back(-1);
+		  		</c:otherwise>
+		  	</c:choose>
 		}
 	}, 1000)
 </script>

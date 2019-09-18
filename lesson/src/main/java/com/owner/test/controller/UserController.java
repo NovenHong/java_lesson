@@ -1,15 +1,25 @@
 package com.owner.test.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +27,7 @@ import com.owner.test.entity.Address;
 import com.owner.test.entity.User;
 import com.owner.test.service.AddressService;
 import com.owner.test.service.UserService;
+import com.owner.test.validator.group.UserAddGroup;
 
 @Controller
 @RequestMapping("/user")
@@ -47,18 +58,13 @@ public class UserController {
 	}
 	
 	@RequestMapping("/register")
-	public String register(HttpServletRequest request,User user,Map<String, String> map) {
+	public String register(HttpServletRequest request,@Validated(value= {UserAddGroup.class}) User user,BindingResult bindingResult,Map<String, String> map) {
 		
 		if(request.getMethod().equals(RequestMethod.POST.toString())) {
 			
-			if(user.getUsername() == "") {
-				map.put("message", "用户名为空");
-				map.put("url", "user/register");
-				return "common/error";
-			}
-			if(user.getPassword() == "") {
-				map.put("message", "用户密码为空");
-				map.put("url", "user/register");
+			if(bindingResult.hasErrors()) {
+				map.put("message", bindingResult.getFieldError().getDefaultMessage());
+				//map.put("url", "user/register");
 				return "common/error";
 			}
 			
@@ -66,6 +72,7 @@ public class UserController {
 			
 			for(Address address : user.getAddressList()) {
 				address.setUserId(user.getId());
+				
 				if(address.getCountry() != "" && address.getCity() != "") {
 					addressService.insertAddress(address);
 				}
@@ -124,6 +131,8 @@ public class UserController {
 			
 		}else {
 			
+			//System.out.println("ok1");
+			
 			//验证是否已经登录
 			if(request.getSession().getAttribute("user") != null) {
 				return "redirect:/";
@@ -131,6 +140,38 @@ public class UserController {
 			
 			return "user/login";
 		}
+	}
+	
+	@RequestMapping("/upload")
+	public String upload(HttpServletRequest request,MultipartFile uploadfile) {
+		if(request.getMethod().equals(RequestMethod.POST.toString())) {
+			
+			String originalFilename = uploadfile.getOriginalFilename();
+			
+			String filename = UUID.randomUUID()+originalFilename.substring(originalFilename.indexOf("."));
+			
+			String path = request.getServletContext().getRealPath("/WEB-INF/upload");
+			
+			System.out.println(path);
+			
+			System.out.println(filename);
+			
+			try {
+				uploadfile.transferTo(new File(path+"/"+filename));
+			} catch (IllegalStateException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return "user/upload";
+		}else {
+			return "user/upload";
+		}
+	}
+	
+	@RequestMapping("/template")
+	public String template() {
+		return "user/template";
 	}
 	
 }

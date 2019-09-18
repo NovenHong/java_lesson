@@ -1,5 +1,7 @@
 package com.owner.test.service;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -15,8 +17,8 @@ public class AddressService {
 	
 	public void insertAddress(Address address) {
 		
-		address.setCreateTime(System.currentTimeMillis() / 1000);
+		address.setCreateTime(new Long(new Date().getTime()).intValue());
 		
-		this.addressMapper.insertAddress(address);
+		this.addressMapper.insert(address);
 	}
 }

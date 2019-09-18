@@ -7,7 +7,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import com.owner.test.entity.Role;
 import com.owner.test.entity.User;
+import com.owner.test.entity.UserRoleRelation;
 import com.owner.test.mapper.UserMapper;
 
 @Service("userService")
@@ -41,6 +43,18 @@ public class UserService {
 	
 	public List<User> queryAllUser() {
 		return userMapper.queryAllUser();
+	}
+	
+	public List<User> findUserRoleByPrimaryId(int id) {
+		return userMapper.queryUserWithRoleByPrimaryId(id);
+	}
+	
+	public void deleteUserRoleByRelation(UserRoleRelation userRoleRelation) {
+		userMapper.deleteUserRoleByRelation(userRoleRelation);
+	}
+	
+	public User findUserByPrimaryId(int id) {
+		return userMapper.getUserByPrimaryId(id);
 	}
 	
 }

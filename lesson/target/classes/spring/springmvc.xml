@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
 		http://www.springframework.org/schema/mvc 
@@ -13,24 +15,58 @@
 		http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
 		http://www.springframework.org/schema/tx 
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd ">
-        
-    <context:component-scan base-package="com.owner.test.controller" />
-        
-    <mvc:annotation-driven />
-        
-    <!-- 视图解析器 -->
-    <bean
+
+	<context:component-scan
+		base-package="com.owner.test.controller" />
+
+	<mvc:annotation-driven />
+
+	<mvc:annotation-driven validator="validator" />
+
+	<!-- 视图解析器 -->
+	<!-- <bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
+	</bean> -->
+
+	<bean id="templateResolver"
+		class="org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver">
+		<property name="prefix" value="/WEB-INF/templates/" />
+		<property name="suffix" value=".html" />
+		<!-- HTML is the default value, added here for the sake of clarity. -->
+		<property name="templateMode" value="HTML" />
+		<!-- Template cache is true by default. Set to false if you want -->
+		<!-- templates to be automatically updated when modified. -->
+		<property name="cacheable" value="false" />
+		<property name="characterEncoding" value="UTF-8" />
 	</bean>
-	
+
+	<bean id="templateEngine"
+		class="org.thymeleaf.spring5.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+		<property name="enableSpringELCompiler" value="true" />
+	</bean>
+
+	<bean class="org.thymeleaf.spring5.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+		<property name="characterEncoding" value="UTF-8" />
+	</bean>
+
 	<!-- 异常解析器 -->
-	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
 		<property name="defaultErrorView" value="error"></property>
 		<property name="exceptionAttribute" value="ex"></property>
 	</bean>
-	
+
+	<!-- 文件上传解析器 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="10485760" />
+	</bean>
+
 	<!-- 拦截器 -->
 	<mvc:interceptors>
 		<mvc:interceptor>
@@ -38,8 +74,27 @@
 			<mvc:exclude-mapping path="/index.jsp" />
 			<mvc:exclude-mapping path="/user/login" />
 			<mvc:exclude-mapping path="/user/register" />
-			<bean class="com.owner.test.interceptor.LoginInterceptor"/>
+			<bean class="com.owner.test.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
-	
+
+	<!-- 自定义校验信息 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="basenames">
+			<list>
+				<value>ValidationMessages</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 属性校验 -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass"
+			value="org.hibernate.validator.HibernateValidator" />
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+
 </beans>
