@@ -13,7 +13,7 @@
   
   <body>
     <h3>成功提示</h3>
-  	<h4 th:text="${message}"></h4>
+  	<h4 th:text="${application.message}"></h4>
   	<span class="timeout">3</span>秒后跳转...
   </body>
   
@@ -21,7 +21,7 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-	var url = /*[[${url}]]*/null;
+	var url12 = /*[[${application.url}]]*/null;
 
 	var timeout = $(".timeout").text();
 	
@@ -31,12 +31,13 @@
 		if(timeout == 0){
 			clearInterval(timer);
 			
-			if([[${url} ? true : false]]){
-				location.href=[[@{/{path}(path=${url})}]];
+			if(url12){
+				var url1 = [[@{/{path}(path=${application.url})}]];
+				url1 = url1.replace("//","/");
+				location.href=url1;
 			}else{
 				window.history.back(-1);
 			}
-			
 		}
 	}, 1000)
 </script>

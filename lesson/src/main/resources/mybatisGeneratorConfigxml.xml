@@ -34,8 +34,8 @@
   		
   		<javaClientGenerator targetPackage="com.owner.test.mapper" type="XMLMAPPER" targetProject="lesson/src/main/java"></javaClientGenerator>
   		
-  		<table 
-  			tableName="address" 
+  		<table
+  			tableName="permission"
   			catalog="test" enableCountByExample="false" enableUpdateByExample="false" 
   			enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" >
   			<property name="constructorBased" value="false"/>

@@ -12,9 +12,17 @@
   </head>
   
   <body>
-    <form th:action="@{/user/login(id=3,other=1)}" method="post">
+<!--     <form th:action="@{/user/login(id=3,other=1)}" method="post">
   		用户名：<input type="text" name="username" value=""/><br>
   		密码：<input type="password" name="password" value=""/><br>
+  		<br>
+  		<input type="submit" value="提交" />
+  	</form> -->
+  	
+  	<form th:action="@{/login}" method="post">
+  		用户名：<input type="text" name="username" value=""/><br>
+  		密码：<input type="password" name="password" value=""/><br>
+  		验证码：<input type="text" name="code" value=""/><img alt="code" id="validcode" onclick="javascript:this.src=this.src+Math.random()" th:src="@{/kaptcha.jpg?}" /><br>
   		<br>
   		<input type="submit" value="提交" />
   	</form>

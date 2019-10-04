@@ -8,4 +8,18 @@
 		select * from role where id = #{id}
 	</select>
 	
+	<select id="getAllRoleByPermissionUrl" resultType="com.owner.test.entity.Role">
+		SELECT role.* FROM role 
+		LEFT JOIN role_permission_rel AS rel ON role.id = rel.roleId 
+		LEFT JOIN permission ON permission.id = rel.permissionId 
+		WHERE permission.url = #{url}
+	</select>
+	
+	<select id="getAllRoleByUserName" resultType="com.owner.test.entity.Role">
+		SELECT role.* FROM role 
+		LEFT JOIN user_role_rel AS rel ON role.id = rel.roleId 
+		LEFT JOIN user ON user.id = rel.userId 
+		WHERE user.username = #{username}
+	</select>
+	
 </mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd
+    http://www.springframework.org/schema/context 
+ 	http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    
+    <context:component-scan base-package="com.owner.test.handler" />
+
+ 	<security:http pattern="/user/login" security="none" />
+	<security:http pattern="/error" security="none" />
+	<security:http pattern="/kaptcha*" security="none" />
+
+	<security:http auto-config="true" use-expressions="false" entry-point-ref="myAuthenticationEntryPoint">
+<!-- 		<security:intercept-url pattern="/*" access="ROLE_USER" />
+		<security:intercept-url pattern="/user/**" access="ROLE_ADMIN" /> -->
+		<security:custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR"/>
+		
+		<security:custom-filter ref="myCodeValidatorProcessingFilter" before="PRE_AUTH_FILTER"/>
+
+		<security:form-login login-page="/user/login"
+			login-processing-url="/login" default-target-url="/success"
+			authentication-failure-url="/error" 
+			authentication-failure-handler-ref="myAuthenticationFailureHandler"
+			authentication-success-handler-ref="myAuthenticationSuccessHandler"/>
+
+		<security:logout invalidate-session="true" 
+			logout-url="/logout" success-handler-ref="myLogoutSuccessHandler"/>
+			
+		<security:csrf disabled="true"/>
+		
+		<security:access-denied-handler ref="myAccessDeniedHandler"/>
+			
+	</security:http>
+	
+	<bean id="filterSecurityInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="accessDecisionManager" ref="myAccessDecisionManagerHandler"/>
+		<property name="securityMetadataSource" ref="mySecurityMetadataSourceHandler" />
+	</bean>
+	
+	<bean id="myCodeValidatorProcessingFilter" class="com.owner.test.handler.MyCodeValidatorProcessingFilter">
+		<property name="authenticationManager" ref="authenticationManager"/>
+	</bean>
+	
+	<bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<security:authentication-manager id="authenticationManager">
+		<!-- <security:authentication-provider>
+			<security:user-service>
+				<security:user name="nana1" password="{noop}123456"
+					authorities="ROLE_USER" />
+			</security:user-service>
+		</security:authentication-provider> -->
+		
+		<security:authentication-provider user-service-ref="myUserDetailsServiceHandler">
+			<security:password-encoder ref="bcryptEncoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+</beans>

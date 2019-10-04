@@ -68,7 +68,7 @@
 	</bean>
 
 	<!-- 拦截器 -->
-	<mvc:interceptors>
+	<!-- <mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<mvc:exclude-mapping path="/index.jsp" />
@@ -76,7 +76,7 @@
 			<mvc:exclude-mapping path="/user/register" />
 			<bean class="com.owner.test.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 
 	<!-- 自定义校验信息 -->
 	<bean id="messageSource"

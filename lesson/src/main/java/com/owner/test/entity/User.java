@@ -1,5 +1,6 @@
 package com.owner.test.entity;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -9,8 +10,10 @@ import javax.validation.constraints.PositiveOrZero;
 
 import com.owner.test.validator.group.UserAddGroup;
 
-public class User {
+public class User implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private int id;
 	
 	@NotBlank(message="{username.NotBlank}",groups= {UserAddGroup.class})

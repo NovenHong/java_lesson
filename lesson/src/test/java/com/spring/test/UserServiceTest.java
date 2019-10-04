@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -75,5 +76,14 @@ public class UserServiceTest {
 		for(User user : users) {
 			System.out.println(user);
 		}
+	}
+	
+	@Test
+	public void test05() {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		
+		String password = passwordEncoder.encode("123456");
+		
+		System.out.println(password);
 	}
 }

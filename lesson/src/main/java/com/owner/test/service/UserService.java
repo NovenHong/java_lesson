@@ -57,4 +57,8 @@ public class UserService {
 		return userMapper.getUserByPrimaryId(id);
 	}
 	
+	public User findUserByUsername(String username) {
+		return userMapper.getUserByUsername(username); 
+	}
+	
 }

@@ -27,4 +27,6 @@ public interface UserMapper {
 	public List<User> queryUserWithRoleByPrimaryId(int id);
 	
 	public void deleteUserRoleByRelation(UserRoleRelation userRoleRelation);
+
+	public User getUserByUsername(String username);
 }
