@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.owner.test.mapper.RoleMapper">
+
+	<select id="getRoleByPrimaryId" resultType="com.owner.test.entity.Role">
+		select * from role where id = #{id}
+	</select>
+	
+	<select id="getAllRoleByPermissionUrl" resultType="com.owner.test.entity.Role">
+		SELECT role.* FROM role 
+		LEFT JOIN role_permission_rel AS rel ON role.id = rel.roleId 
+		LEFT JOIN permission ON permission.id = rel.permissionId 
+		WHERE permission.url = #{url}
+	</select>
+	
+	<select id="getAllRoleByUserName" resultType="com.owner.test.entity.Role">
+		SELECT role.* FROM role 
+		LEFT JOIN user_role_rel AS rel ON role.id = rel.roleId 
+		LEFT JOIN user ON user.id = rel.userId 
+		WHERE user.username = #{username}
+	</select>
+	
+</mapper>

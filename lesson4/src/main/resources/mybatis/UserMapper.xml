@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.owner.test.mapper.UserMapper">
+
+	<insert id="insertUser" parameterType="com.owner.test.entity.User" useGeneratedKeys="true" keyProperty="id">
+		insert into user (username,password,status,createTime)
+		values (#{username},#{password},#{status},#{createTime})
+	</insert>
+	
+	<select id="queryAllUser" resultType="com.owner.test.entity.User">
+		select * from user
+	</select>
+	
+	<select id="getUserByPrimaryId" resultType="com.owner.test.entity.User">
+		select * from user where id = #{id}
+	</select>
+	
+	<select id="getUserByUsername" resultType="com.owner.test.entity.User">
+		select * from user where username = #{username} limit 1
+	</select>
+	
+	<resultMap id="userWithRoleResultMap" type="com.owner.test.entity.User" autoMapping="true">
+		<id column="id" property="id" />
+		<collection property="roleList" javaType="List" ofType="com.owner.test.entity.Role" autoMapping="true">
+			<result column="roleId" property="id"/>
+			<result column="roleCreateTime" property="createTime"/>
+		</collection>
+	</resultMap>
+	
+	<select id="queryUserWithRoleByPrimaryId" resultMap="userWithRoleResultMap">
+		SELECT u.*,r.id roleId,r.userId,r.name,r.createTime roleCreateTime
+		FROM user u,role r,user_role_rel ur 
+		WHERE u.id = ur.userId AND r.id = ur.roleId AND u.id = #{id}
+	</select>
+	
+</mapper>

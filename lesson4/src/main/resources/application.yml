@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    username: root
+    password: 
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+    
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    timeout: 10
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 10
+        max-wait: 100000
+    
+logging:
+  level:
+    root: info    
+
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/*Mapper.xml
+  type-aliases-package: com.owner.test.entity

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>错误提示</title>
+	<meta charset="UTF-8">
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+  </head>
+  
+  <body>
+    <h3>错误提示</h3>
+  	<h4 th:text="${application.message}"></h4>
+  	<span class="timeout">3</span>秒后跳转...
+  </body>
+  
+</html>
+
+<script type="text/javascript" th:inline="javascript">
+
+	var url12 = /*[[${application.url}]]*/null;
+
+	var timeout = $(".timeout").text();
+	
+	var timer = setInterval(function() {
+		timeout--;
+		$(".timeout").text(timeout);
+		if(timeout == 0){
+			clearInterval(timer);
+			
+			if(url12){
+				var url1 = [[@{/{path}(path=${application.url})}]];
+				url1 = url1.replace("//","/");
+				location.href=url1;
+			}else{
+				window.history.back(-1);
+			}
+			
+		}
+	}, 1000)
+</script>
